@@ -1,7 +1,28 @@
-export const questions = [
+// ====== 型別定義 ======
+
+export type MbtiLetter = "E" | "I" | "S" | "N" | "T" | "F" | "J" | "P";
+export type Dimension = "EI" | "SN" | "TF" | "JP";
+
+export interface QuestionOption {
+  text: string;
+  value: MbtiLetter;
+}
+
+export interface Question {
+  id: number;
+  story: string;
+  question: string;
+  options: QuestionOption[];
+  dimension: Dimension;
+}
+
+// ====== 題庫 ======
+
+export const questions: Question[] = [
   // ---------- EI ----------
   {
     id: 1,
+    dimension: "EI",
     story:
       "你踏回艾拉辛森林的瞬間，心脈石爆出光芒，吸引靠近你的影子巡者。他半跪在你面前，語氣複雜地說：「我們等你很久了……失落的血脈。」",
     question: "你第一個反應會是？",
@@ -12,6 +33,7 @@ export const questions = [
   },
   {
     id: 2,
+    dimension: "EI",
     story:
       "古樹在你耳邊嗡鳴，傳達混亂的氣息。一頭光鹿踏出霧中，盯著你，然後輕輕靠近。",
     question: "你會怎麼做？",
@@ -22,6 +44,7 @@ export const questions = [
   },
   {
     id: 3,
+    dimension: "EI",
     story:
       "一隊秩序守衛突然包圍你：「展示你的印記！」 場面有壓迫感，但你知道他們認得你的血脈。",
     question: "你的回應是？",
@@ -32,6 +55,7 @@ export const questions = [
   },
   {
     id: 4,
+    dimension: "EI",
     story:
       "遠方傳來影界獵人的嘯聲，他們正朝你衝來。守衛驚慌喊道：「他們是為了你而來！」",
     question: "你會怎麼行動？",
@@ -44,6 +68,7 @@ export const questions = [
   // ---------- S / N ----------
   {
     id: 5,
+    dimension: "SN",
     story:
       "你觸碰森脈殿的遺跡大門，符文亮起，幻象在你眼前浮現：一頭巨獸撕裂森林。",
     question: "你相信什麼最重要？",
@@ -54,6 +79,7 @@ export const questions = [
   },
   {
     id: 6,
+    dimension: "SN",
     story:
       "霧心鹿向你展示兩條道路：一條是明確的石板路，一條是霧氣瀰漫的荒野。",
     question: "你會跟隨哪一條？",
@@ -64,6 +90,7 @@ export const questions = [
   },
   {
     id: 7,
+    dimension: "SN",
     story:
       "符文狐刻出三個發光符號後問你：「你理解這代表什麼嗎？」",
     question: "你會如何推理？",
@@ -74,6 +101,7 @@ export const questions = [
   },
   {
     id: 8,
+    dimension: "SN",
     story:
       "時裂獸向你展示兩幅畫面：一個是森林崩裂的現實影像；另一個是象徵混沌的抽象圖景。",
     question: "你更相信哪一個？",
@@ -86,16 +114,18 @@ export const questions = [
   // ---------- T / F ----------
   {
     id: 9,
+    dimension: "TF",
     story:
       "精靈文士艾爾溫低聲說：「你父親留下的預言……若為真，你將帶來災禍。」",
     question: "你會如何回應？",
     options: [
       { text: "要求他提出證據，討論預言邏輯。", value: "T" },
-      { text: "理解他的恐懼，先安撫他的情緒。", value: "F" },
+      { text: "理解他的恐懼，先安抚他的情緒。", value: "F" },
     ],
   },
   {
     id: 10,
+    dimension: "TF",
     story:
       "獸人戰士卡洛加怒指你胸口的印記：「就是這符號毀了我的族人！」",
     question: "你會怎麼回應？",
@@ -106,6 +136,7 @@ export const questions = [
   },
   {
     id: 11,
+    dimension: "TF",
     story:
       "黑影施法者薩恩說：「你的父親……死於秩序議會之手。跟我走，我能告訴你真相。」",
     question: "你會怎麼做？",
@@ -116,6 +147,7 @@ export const questions = [
   },
   {
     id: 12,
+    dimension: "TF",
     story:
       "夜裡，你被困在崩裂法陣中。你突然意識到——三人之一背叛了你。",
     question: "你的第一任務是？",
@@ -128,6 +160,7 @@ export const questions = [
   // ---------- J / P ----------
   {
     id: 13,
+    dimension: "JP",
     story:
       "秩序之環正在崩塌，學者大喊：「快訂下修復流程，不然一切會毀滅！」",
     question: "你會怎麼做？",
@@ -138,6 +171,7 @@ export const questions = [
   },
   {
     id: 14,
+    dimension: "JP",
     story:
       "混沌獸突破封印，朝避難者衝去，能量完全失控。",
     question: "你的行動是？",
@@ -148,6 +182,7 @@ export const questions = [
   },
   {
     id: 15,
+    dimension: "JP",
     story:
       "預言之門脈動加劇，你只有短暫時間能做決定。",
     question: "你會選擇？",
@@ -158,6 +193,7 @@ export const questions = [
   },
   {
     id: 16,
+    dimension: "JP",
     story:
       "秩序與混沌兩股力量在你面前交織，通往命運的道路逐漸成形。",
     question: "你將如何選擇你的道路？",
