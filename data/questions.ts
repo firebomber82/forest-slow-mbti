@@ -1,205 +1,262 @@
-// ====== 型別定義 ======
-
-export type MbtiLetter = "E" | "I" | "S" | "N" | "T" | "F" | "J" | "P";
-export type Dimension = "EI" | "SN" | "TF" | "JP";
+export type MbtiValue = {
+  EI?: "E" | "I";
+  SN?: "S" | "N";
+  TF?: "T" | "F";
+  JP?: "J" | "P";
+};
 
 export interface QuestionOption {
   text: string;
-  value: MbtiLetter;
+  value: MbtiValue;
 }
 
 export interface Question {
   id: number;
-  story: string;
   question: string;
   options: QuestionOption[];
-  dimension: Dimension;
 }
 
-// ====== 題庫 ======
-
 export const questions: Question[] = [
-  // ---------- EI ----------
   {
     id: 1,
-    dimension: "EI",
-    story:
-      "你踏回艾拉辛森林的瞬間，心脈石爆出光芒，吸引靠近你的影子巡者。他半跪在你面前，語氣複雜地說：「我們等你很久了……失落的血脈。」",
-    question: "你第一個反應會是？",
+    question: "你走進陌生研討會場，剛坐下時你會？",
     options: [
-      { text: "上前詢問更多細節，主動掌握局面。", value: "E" },
-      { text: "保持距離，先觀察他的意圖。", value: "I" },
+      { text: "先觀察細節與動線。", value: { EI: "I", SN: "S", JP: "J" } },
+      { text: "主動與鄰座建立小互動。", value: { EI: "E", TF: "F" } },
+      { text: "推演整場可能的發展。", value: { SN: "N", TF: "T" } },
+      { text: "先感受氣氛再融入。", value: { EI: "I", JP: "P" } },
     ],
   },
   {
     id: 2,
-    dimension: "EI",
-    story:
-      "古樹在你耳邊嗡鳴，傳達混亂的氣息。一頭光鹿踏出霧中，盯著你，然後輕輕靠近。",
-    question: "你會怎麼做？",
+    question: "你被指派審查一份亂糟糟的文件，你的第一步？",
     options: [
-      { text: "主動向牠表達友善並伸手觸碰。", value: "E" },
-      { text: "安靜站著，等待牠先行表達。", value: "I" },
+      { text: "檢查格式與事實是否正確。", value: { SN: "S", TF: "T", JP: "J" } },
+      { text: "重建文件的邏輯架構。", value: { SN: "N", TF: "T", JP: "J" } },
+      { text: "先詢問背景與脈絡。", value: { SN: "S", TF: "F" } },
+      { text: "先抓大方向後再細看。", value: { SN: "N", JP: "P" } },
     ],
   },
   {
     id: 3,
-    dimension: "EI",
-    story:
-      "一隊秩序守衛突然包圍你：「展示你的印記！」 場面有壓迫感，但你知道他們認得你的血脈。",
-    question: "你的回應是？",
+    question: "同事分享複雜產業趨勢，你的理解方式？",
     options: [
-      { text: "主動解釋、試著控制局勢。", value: "E" },
-      { text: "沉著靜聽，先觀察他們的態度。", value: "I" },
+      { text: "要求提供具體案例與證據。", value: { SN: "S", TF: "T" } },
+      { text: "延伸未來可能的多種情境。", value: { SN: "N", TF: "T" } },
+      { text: "優先關注與專案的實際連結。", value: { SN: "S", JP: "J" } },
+      { text: "先聽氛圍，之後用直覺整理。", value: { SN: "N", TF: "F", JP: "P" } },
     ],
   },
   {
     id: 4,
-    dimension: "EI",
-    story:
-      "遠方傳來影界獵人的嘯聲，他們正朝你衝來。守衛驚慌喊道：「他們是為了你而來！」",
-    question: "你會怎麼行動？",
+    question: "第一次和陌生客戶溝通，你會？",
     options: [
-      { text: "立刻下令所有人迅速撤離。", value: "E" },
-      { text: "先冷靜確認路線，再採取行動。", value: "I" },
+      { text: "用簡短具體的方式破冰。", value: { TF: "T", JP: "J" } },
+      { text: "用願景切入建立全局連結。", value: { EI: "E", SN: "N" } },
+      { text: "觀察對方反應調整節奏。", value: { TF: "F", EI: "I" } },
+      { text: "順著對方風格走。", value: { JP: "P", TF: "F" } },
     ],
   },
-
-  // ---------- S / N ----------
   {
     id: 5,
-    dimension: "SN",
-    story:
-      "你觸碰森脈殿的遺跡大門，符文亮起，幻象在你眼前浮現：一頭巨獸撕裂森林。",
-    question: "你相信什麼最重要？",
+    question: "新專案 kickoff，你最在意？",
     options: [
-      { text: "符文細節與具體畫面本身的訊息。", value: "S" },
-      { text: "幻象象徵背後更深的混沌失衡。", value: "N" },
+      { text: "分工、流程、節奏必須清楚。", value: { JP: "J", SN: "S", TF: "T" } },
+      { text: "整體願景與長期影響。", value: { SN: "N", EI: "E" } },
+      { text: "團隊氛圍與合作默契。", value: { TF: "F", EI: "I" } },
+      { text: "彈性度以及是否可調整。", value: { JP: "P", SN: "N" } },
     ],
   },
   {
     id: 6,
-    dimension: "SN",
-    story:
-      "霧心鹿向你展示兩條道路：一條是明確的石板路，一條是霧氣瀰漫的荒野。",
-    question: "你會跟隨哪一條？",
+    question: "有人提出你不同意的提案時，你會？",
     options: [
-      { text: "清晰可見、最安全的石板路。", value: "S" },
-      { text: "雖不確定但感覺被牽引的霧路。", value: "N" },
+      { text: "要求邏輯與數據再判斷。", value: { TF: "T", JP: "J" } },
+      { text: "先理解他的動機與感受。", value: { TF: "F", EI: "I" } },
+      { text: "試著找折衷解法。", value: { TF: "F", JP: "P" } },
+      { text: "直接提出你認為最好的方案。", value: { TF: "T", EI: "E" } },
     ],
   },
   {
     id: 7,
-    dimension: "SN",
-    story:
-      "符文狐刻出三個發光符號後問你：「你理解這代表什麼嗎？」",
-    question: "你會如何推理？",
+    question: "開會時聽到兩人意見衝突，你會？",
     options: [
-      { text: "逐一分析來源、規律與符號組成。", value: "S" },
-      { text: "從整體意象感應其背後意義。", value: "N" },
+      { text: "看哪一方邏輯較穩。", value: { TF: "T", JP: "J" } },
+      { text: "試著讓情緒降溫。", value: { TF: "F", EI: "I" } },
+      { text: "記錄重點，會後整合。", value: { JP: "J", EI: "I" } },
+      { text: "看氣氛再決定是否介入。", value: { JP: "P", SN: "N" } },
     ],
   },
   {
     id: 8,
-    dimension: "SN",
-    story:
-      "時裂獸向你展示兩幅畫面：一個是森林崩裂的現實影像；另一個是象徵混沌的抽象圖景。",
-    question: "你更相信哪一個？",
+    question: "遇到臨時變動，你的反應？",
     options: [
-      { text: "具體畫面更能代表事實。", value: "S" },
-      { text: "象徵性畫面才是真正的預兆。", value: "N" },
+      { text: "先確認原計畫是否受影響。", value: { JP: "J", SN: "S" } },
+      { text: "看是否可替代成更好的方案。", value: { SN: "N", TF: "T" } },
+      { text: "了解變動原因再調整心態。", value: { TF: "F", JP: "P" } },
+      { text: "冷靜分析背後結構。", value: { SN: "N", TF: "T" } },
     ],
   },
-
-  // ---------- T / F ----------
   {
     id: 9,
-    dimension: "TF",
-    story:
-      "精靈文士艾爾溫低聲說：「你父親留下的預言……若為真，你將帶來災禍。」",
-    question: "你會如何回應？",
+    question: "如果你是整合專案的人，你會採用什麼管理方式？",
     options: [
-      { text: "要求他提出證據，討論預言邏輯。", value: "T" },
-      { text: "理解他的恐懼，先安抚他的情緒。", value: "F" },
+      { text: "明確規範與期限。", value: { JP: "J", SN: "S" } },
+      { text: "只要大方向一致，可自由運作。", value: { SN: "N", JP: "P" } },
+      { text: "多聽意見後做結論。", value: { TF: "F", EI: "I" } },
+      { text: "用數據與模型強化執行。", value: { TF: "T", JP: "J" } },
     ],
   },
   {
     id: 10,
-    dimension: "TF",
-    story:
-      "獸人戰士卡洛加怒指你胸口的印記：「就是這符號毀了我的族人！」",
-    question: "你會怎麼回應？",
+    question: "面對壓力時你的模式？",
     options: [
-      { text: "冷靜分析事件因果，與她釐清真相。", value: "T" },
-      { text: "承認她的痛苦，並表達願意彌補。", value: "F" },
+      { text: "拆解工作並逐項完成。", value: { JP: "J", TF: "T" } },
+      { text: "推演最差與最好情況。", value: { SN: "N", TF: "T" } },
+      { text: "找可信賴的人討論感受。", value: { TF: "F", EI: "I" } },
+      { text: "先冷靜等待直覺。", value: { JP: "P", SN: "N" } },
     ],
   },
   {
     id: 11,
-    dimension: "TF",
-    story:
-      "黑影施法者薩恩說：「你的父親……死於秩序議會之手。跟我走，我能告訴你真相。」",
-    question: "你會怎麼做？",
+    question: "團隊討論越吵越亂時，你會？",
     options: [
-      { text: "他動機可疑，先保持理性距離。", value: "T" },
-      { text: "他的悲傷聲音讓你願意先聽他說。", value: "F" },
+      { text: "要求大家回到主題。", value: { TF: "T", JP: "J" } },
+      { text: "讓大家輪流說完。", value: { TF: "F", EI: "I" } },
+      { text: "先讓資訊流動再整理。", value: { JP: "P", SN: "N" } },
+      { text: "協助將焦點拉回目的。", value: { TF: "T", EI: "I" } },
     ],
   },
   {
     id: 12,
-    dimension: "TF",
-    story:
-      "夜裡，你被困在崩裂法陣中。你突然意識到——三人之一背叛了你。",
-    question: "你的第一任務是？",
+    question: "你收到一份重要資料，但內容很少，你會？",
     options: [
-      { text: "分析法陣弱點，優先逃脫。", value: "T" },
-      { text: "先思考哪些人值得信任與保護。", value: "F" },
+      { text: "要求補齊資訊。", value: { SN: "S", JP: "J" } },
+      { text: "快速推論方向。", value: { SN: "N", TF: "T" } },
+      { text: "找熟悉的人了解脈絡。", value: { SN: "S", TF: "F" } },
+      { text: "先做簡易模型試跑。", value: { TF: "T", JP: "P" } },
     ],
   },
-
-  // ---------- J / P ----------
   {
     id: 13,
-    dimension: "JP",
-    story:
-      "秩序之環正在崩塌，學者大喊：「快訂下修復流程，不然一切會毀滅！」",
-    question: "你會怎麼做？",
+    question: "團隊要選今天晚餐，你會？",
     options: [
-      { text: "立即制定明確步驟並分配任務。", value: "J" },
-      { text: "先觀察能量走向，再決定下一步。", value: "P" },
+      { text: "提出效率最高的選項。", value: { TF: "T", JP: "J" } },
+      { text: "看大家 mood 再決定。", value: { TF: "F", JP: "P" } },
+      { text: "提出 2–3 個選項讓大家 vote。", value: { JP: "J", TF: "F" } },
+      { text: "跟大家走但心裡有偏好。", value: { EI: "I", JP: "P" } },
     ],
   },
   {
     id: 14,
-    dimension: "JP",
-    story:
-      "混沌獸突破封印，朝避難者衝去，能量完全失控。",
-    question: "你的行動是？",
+    question: "新成員加入團隊，你會？",
     options: [
-      { text: "迅速下令所有人撤離到安全點。", value: "J" },
-      { text: "試探混沌流向，找更有效的策略。", value: "P" },
+      { text: "提供清楚 onboarding 文件。", value: { JP: "J", SN: "S" } },
+      { text: "先讓他跟大家熟起來。", value: { TF: "F", EI: "E" } },
+      { text: "觀察他的風格。", value: { EI: "I", SN: "N" } },
+      { text: "了解他能補什麼能力缺口。", value: { SN: "N", TF: "T" } },
     ],
   },
   {
     id: 15,
-    dimension: "JP",
-    story:
-      "預言之門脈動加劇，你只有短暫時間能做決定。",
-    question: "你會選擇？",
+    question: "你在完成任務後最常有的感受？",
     options: [
-      { text: "優先建立穩定儀式，避免失控。", value: "J" },
-      { text: "直接開門，讓真相迅速浮現。", value: "P" },
+      { text: "是否達到預期品質。", value: { JP: "J", TF: "T" } },
+      { text: "整體意義是什麼。", value: { SN: "N", TF: "F" } },
+      { text: "團隊配合是否順利。", value: { TF: "F", EI: "I" } },
+      { text: "先休息等待靈感。", value: { JP: "P", SN: "N" } },
     ],
   },
   {
     id: 16,
-    dimension: "JP",
-    story:
-      "秩序與混沌兩股力量在你面前交織，通往命運的道路逐漸成形。",
-    question: "你將如何選擇你的道路？",
+    question: "第一次到一個城市旅行，你會？",
     options: [
-      { text: "遵循古老方式，協助秩序重建。", value: "J" },
-      { text: "打破規範，開創混沌與秩序的平衡新路。", value: "P" },
+      { text: "照行程逐點完成。", value: { JP: "J", SN: "S" } },
+      { text: "依照氣氛漫步。", value: { JP: "P", TF: "F" } },
+      { text: "找當地人推薦特色。", value: { EI: "E", SN: "S" } },
+      { text: "看評論後優化路線。", value: { JP: "J", TF: "T" } },
+    ],
+  },
+  {
+    id: 17,
+    question: "工作中你最討厭的是？",
+    options: [
+      { text: "沒有明確資訊或規格。", value: { JP: "J", SN: "S" } },
+      { text: "過度僵化、不能改。", value: { JP: "P", SN: "N" } },
+      { text: "氣氛緊繃或衝突。", value: { TF: "F", EI: "I" } },
+      { text: "低效率、浪費時間。", value: { JP: "J", TF: "T" } },
+    ],
+  },
+  {
+    id: 18,
+    question: "你要準備一場重要簡報，你會？",
+    options: [
+      { text: "撰寫逐頁詳細內容。", value: { JP: "J", SN: "S" } },
+      { text: "做架構即可，臨場發揮。", value: { JP: "P", SN: "N" } },
+      { text: "收集外界案例。", value: { SN: "S", TF: "F" } },
+      { text: "用數據模型強化說服力。", value: { TF: "T", JP: "J" } },
+    ],
+  },
+  {
+    id: 19,
+    question: "你和人討論時最常注意什麼？",
+    options: [
+      { text: "對方細節、語氣、用字。", value: { SN: "S", EI: "I" } },
+      { text: "整體邏輯與結構。", value: { SN: "N", TF: "T" } },
+      { text: "情緒與需求。", value: { TF: "F", EI: "E" } },
+      { text: "對話節奏與能量。", value: { SN: "N", JP: "P" } },
+    ],
+  },
+  {
+    id: 20,
+    question: "你對新點子的反應？",
+    options: [
+      { text: "先檢查是否可行。", value: { TF: "T", SN: "S" } },
+      { text: "想像未來能衍生什麼。", value: { SN: "N", TF: "T" } },
+      { text: "看團隊氣氛是否能接受。", value: { TF: "F", EI: "I" } },
+      { text: "想試試看，不一定要結果。", value: { JP: "P", SN: "N" } },
+    ],
+  },
+  {
+    id: 21,
+    question: "你收到三個急件，你會？",
+    options: [
+      { text: "立刻排序並拆解行動。", value: { JP: "J", TF: "T" } },
+      { text: "依直覺選第一個開始。", value: { JP: "P", SN: "N" } },
+      { text: "先了解脈絡。", value: { SN: "S", TF: "F" } },
+      { text: "建立簡易框架後開始。", value: { TF: "T", JP: "J" } },
+    ],
+  },
+  {
+    id: 22,
+    question: "陌生環境中的自然狀態？",
+    options: [
+      { text: "靜靜觀察後再加入。", value: { EI: "I", SN: "S" } },
+      { text: "快速融入並互動。", value: { EI: "E", TF: "F" } },
+      { text: "探索整體 pattern。", value: { SN: "N", EI: "I" } },
+      { text: "看環境自然調整。", value: { JP: "P", TF: "F" } },
+    ],
+  },
+  {
+    id: 23,
+    question: "協助別人解決問題時，你最先做什麼？",
+    options: [
+      { text: "分析問題原因與線索。", value: { TF: "T", SN: "S" } },
+      { text: "理解他的情緒與需求。", value: { TF: "F", EI: "I" } },
+      { text: "思考問題背後的深層結構。", value: { SN: "N", TF: "T" } },
+      { text: "先問他真正想得到什麼。", value: { TF: "F", JP: "P" } },
+    ],
+  },
+  {
+    id: 24,
+    question: "看到混亂情境時你的直覺是？",
+    options: [
+      { text: "想把事情整理有序。", value: { JP: "J", SN: "S" } },
+      { text: "觀察等靈感出現。", value: { JP: "P", SN: "N" } },
+      { text: "找出核心問題。", value: { TF: "T", SN: "N" } },
+      { text: "先確保大家都 ok。", value: { TF: "F", EI: "I" } },
     ],
   },
 ];
+
+export default questions;
