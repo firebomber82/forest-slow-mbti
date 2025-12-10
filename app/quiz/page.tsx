@@ -5,56 +5,56 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import { questions, type Question } from "@/data/questions";
 
-// 本頁自己定義 MBTI 維度，不再從 questions.ts 匯入
+// MBTI 字母定義
 type MbtiLetter = "E" | "I" | "S" | "N" | "T" | "F" | "J" | "P";
 type Counts = Partial<Record<MbtiLetter, number>>;
 
-// 你現有 16 張圖，仍然可以使用；多出來的題目會用 placeholder。
+// 圖片與背景設定 (維持不變)
 const totemImages: string[] = [
-  "q1-heart-crystal.png",
-  "q2-feather-glow.png",
-  "q3-cracked-eye.png",
-  "q4-spirit-flower.png",
-  "q5-shadow-sigil.png",
-  "q6-empathy-wave.png",
-  "q7-time-hourglass.png",
-  "q8-destiny-rune.png",
-  "q9-mirror-whisper.png",
-  "q10-astral-wheel.png",
-  "q11-emotion-echo.png",
-  "q12-will-blade.png",
-  "q13-fracture-net.png",
-  "q14-order-circle.png",
-  "q15-soul-ember.png",
-  "q16-forest-guardian.png",
+  "q1-heart-crystal.png", "q2-feather-glow.png", "q3-cracked-eye.png", "q4-spirit-flower.png",
+  "q5-shadow-sigil.png", "q6-empathy-wave.png", "q7-time-hourglass.png", "q8-destiny-rune.png",
+  "q9-mirror-whisper.png", "q10-astral-wheel.png", "q11-emotion-echo.png", "q12-will-blade.png",
+  "q13-fracture-net.png", "q14-order-circle.png", "q15-soul-ember.png", "q16-forest-guardian.png",
 ];
 
-// 背景圖：依題號輪流套用 4 張主背景，長度自動 = 題目數
 const bgBase = ["bg-forest-top.png", "bg-forest-bottom.png", "core-truth.png", "gate-final.png"];
 const bgImages: string[] = Array.from({ length: questions.length }).map(
   (_, i) => bgBase[i % bgBase.length]
 );
 
-// ★ 暫時版：把 A/B/C/D 映射成 MBTI 字母（之後你要可再調整）
-const answerMap: Record<
-  number,
-  Record<"A" | "B" | "C" | "D", MbtiLetter>
-> = {};
+/* -----------------------------------------------------------
+   ★ [FIX] 修復計分映射表 (Answer Map)
+   這裡我們用簡單的演算法，將題目輪流分配給四個維度，
+   確保測驗結果一定會包含 E/I, S/N, T/F, J/P。
+----------------------------------------------------------- */
+const answerMap: Record<number, Record<"A" | "B" | "C" | "D", MbtiLetter>> = {};
 
-// 簡單地讓所有題目先用同一組映射，之後你想精調我再幫你改配置即可
-for (let i = 1; i <= questions.length; i++) {
-  answerMap[i] = {
-    A: "J", // 偏向結構、規劃
-    B: "P", // 偏向彈性、直覺
-    C: "F", // 偏向人際、情緒
-    D: "T", // 偏向分析、邏輯
-  };
-}
+questions.forEach((_, index) => {
+  const qNum = index + 1; // 強制使用 1, 2, 3... 序號
+  
+  // 依題號餘數決定這題測什麼維度
+  const mod = qNum % 4;
+  
+  if (mod === 1) { 
+    // 第 1, 5, 9, 13 題：測 E vs I (A/B=E, C/D=I)
+    answerMap[qNum] = { A: "E", B: "E", C: "I", D: "I" };
+  } else if (mod === 2) { 
+    // 第 2, 6, 10, 14 題：測 S vs N (A/B=S, C/D=N)
+    answerMap[qNum] = { A: "S", B: "S", C: "N", D: "N" };
+  } else if (mod === 3) { 
+    // 第 3, 7, 11, 15 題：測 T vs F (A/B=T, C/D=F)
+    answerMap[qNum] = { A: "T", B: "T", C: "F", D: "F" };
+  } else { 
+    // 第 4, 8, 12, 16 題：測 J vs P (A/B=J, C/D=P)
+    answerMap[qNum] = { A: "J", B: "J", C: "P", D: "P" };
+  }
+});
 
 export default function QuizPage() {
   const router = useRouter();
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [counts, setCounts] = useState<Counts>({} as Counts);
+  // 使用 state 紀錄分數
+  const [counts, setCounts] = useState<Counts>({});
 
   const total = questions.length;
   const currentQuestion: Question = questions[currentIndex];
@@ -65,31 +65,35 @@ export default function QuizPage() {
   );
 
   const handleSelect = (value: "A" | "B" | "C" | "D") => {
-    const qId = currentQuestion.id;
+    // ★ [FIX] 使用 currentIndex + 1 確保與 answerMap 對應
+    const qId = currentIndex + 1;
     const mbtiLetter = answerMap[qId]?.[value];
 
+    // 建立一個新的分數物件 (因為 state 更新是非同步的，我們需要即時的數據)
+    const nextCounts = { ...counts };
+
     if (mbtiLetter) {
-      setCounts((prev) => ({
-        ...prev,
-        [mbtiLetter]: (prev[mbtiLetter] ?? 0) + 1,
-      }));
+      nextCounts[mbtiLetter] = (nextCounts[mbtiLetter] ?? 0) + 1;
+      setCounts(nextCounts); // 更新 React State
+    } else {
+        console.warn(`題目 ${qId} 的選項 ${value} 沒有對應的 MBTI 字母，請檢查 answerMap`);
     }
 
     const isLast = currentIndex === total - 1;
 
     if (!isLast) {
-      setCurrentIndex((prev) => prev + 1);
+      // 還沒結束，下一題
+      setTimeout(() => {
+        setCurrentIndex((prev) => prev + 1);
+      }, 150); // 稍微延遲一點讓使用者感覺到點擊回饋
       return;
     }
 
-    // 最後一題：計算 MBTI 結果（這裡是暫時版規則）
-    const finalCounts: Counts = { ...counts };
-    if (mbtiLetter) {
-      finalCounts[mbtiLetter] = (finalCounts[mbtiLetter] ?? 0) + 1;
-    }
-
+    // --- 最後一題，計算結果 ---
+    
+    // 定義 helper：比較兩個字母分數，高的勝出 (平手預設取前者)
     const pick = (a: MbtiLetter, b: MbtiLetter) =>
-      (finalCounts[a] ?? 0) >= (finalCounts[b] ?? 0) ? a : b;
+      (nextCounts[a] ?? 0) >= (nextCounts[b] ?? 0) ? a : b;
 
     const result =
       pick("E", "I") +
@@ -97,15 +101,23 @@ export default function QuizPage() {
       pick("T", "F") +
       pick("J", "P");
 
-    router.push(`/result?type=${result}`);
+    console.log("測驗完成！分數統計:", nextCounts);
+    console.log("最終結果:", result);
+
+    // ★ [FIX] 確保 result 是有效的字串再跳轉
+    if (result && result.length === 4) {
+        router.push(`/result?type=${result}`);
+    } else {
+        // 如果真的算不出來，給一個預設值防止當機 (例如 INTJ)
+        console.error("結果計算錯誤，使用預設值");
+        router.push(`/result?type=INTJ`);
+    }
   };
 
-  // 目前題目的圖檔與背景（安全 fallback）
+  // 安全 fallback
   const totemSrc = "/" + (totemImages[currentIndex] ?? "placeholder-logo.png");
   const bgSrc = "/" + (bgImages[currentIndex] ?? "bg-forest-top.png");
-
-  // 把「Q1｜xxx」前綴去掉，拿來當 Totem 小標
-  const shortTitle = currentQuestion.question.replace(/^Q\d+｜/, "").slice(0, 12);
+  const shortTitle = currentQuestion?.question.replace(/^Q\d+｜/, "").slice(0, 12) || "星渦測試";
 
   return (
     <div
@@ -162,7 +174,7 @@ export default function QuizPage() {
               MAGIC TOTEM
             </p>
             <p className="text-slate-300/80 truncate">
-              {shortTitle || "星渦心像測試點"}
+              {shortTitle}
             </p>
           </div>
         </div>
@@ -170,22 +182,22 @@ export default function QuizPage() {
         {/* 問題本體 */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentQuestion.id}
+            key={currentIndex} // 使用 currentIndex 作為 key 確保切換時觸發動畫
             initial={{ opacity: 0, y: 10, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
             transition={{ duration: 0.35, ease: "easeOut" }}
           >
             <h2 className="text-emerald-100 font-semibold text-lg mb-4">
-              {currentQuestion.question}
+              {currentQuestion?.question}
             </h2>
 
             {/* 選項 */}
             <div className="space-y-3">
-              {currentQuestion.options.map((opt, i) => (
+              {currentQuestion?.options.map((opt, i) => (
                 <motion.button
                   key={i}
-                  onClick={() => handleSelect(opt.value)}
+                  onClick={() => handleSelect(opt.value as "A" | "B" | "C" | "D")}
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.97, y: 0 }}
                   className="w-full text-left px-4 py-3.5 rounded-2xl bg-slate-900/65 border border-slate-700/70 hover:border-teal-400/70 transition-all text-slate-100 shadow-[0_0_20px_rgba(0,0,0,0.65)]"
