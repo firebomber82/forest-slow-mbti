@@ -1,123 +1,72 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { mbtiProfiles } from "@/data/resultProfiles";
+import type { MbtiType, MbtiProfile } from "@/data/resultProfiles";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
-/* -----------------------------------------
-   型別定義
------------------------------------------- */
+/* ---------------------------------
+   工具：安全取得 Profile
+---------------------------------- */
 
-type MbtiCode =
-  | "INTJ" | "INFJ" | "INTP" | "INFP"
-  | "ISTJ" | "ISFJ" | "ISTP" | "ISFP"
-  | "ENTJ" | "ENFJ" | "ENTP" | "ENFP"
-  | "ESTJ" | "ESFJ" | "ESTP" | "ESFP";
+const FALLBACK: MbtiType = "INTJ";
 
-type SectionKey = "core" | "work" | "relation" | "shadow" | "growth";
+function getProfile(type: string | null): MbtiProfile {
+  if (!type) return mbtiProfiles[FALLBACK];
 
-type Profile = {
-  code: MbtiCode;
-  archetype: string;
-  title: string;
-  tagline: string;
-  keywords: string[];
-  palette: {
-    primary: string;
-    secondary: string;
-  };
-  sections: Record<SectionKey, string>;
-};
-
-/* -----------------------------------------
-   MBTI 資料庫（你已貼過，這裡直接使用）
------------------------------------------- */
-
-declare const MBTI_PROFILES: Record<MbtiCode, Profile>;
-
-/* -----------------------------------------
-   安全取用工具（關鍵）
------------------------------------------- */
-
-const FALLBACK_TYPE: MbtiCode = "INTJ";
-
-function getSafeProfile(raw: string | null): Profile {
-  if (!raw) return MBTI_PROFILES[FALLBACK_TYPE];
-
-  const normalized = raw.trim().toUpperCase() as MbtiCode;
-
-  return MBTI_PROFILES[normalized] ?? MBTI_PROFILES[FALLBACK_TYPE];
+  const key = type.toUpperCase() as MbtiType;
+  return mbtiProfiles[key] ?? mbtiProfiles[FALLBACK];
 }
 
-/* -----------------------------------------
-   Result Page 主體
------------------------------------------- */
+/* ---------------------------------
+   Result Page
+---------------------------------- */
 
 export default function ResultPage() {
   const searchParams = useSearchParams();
-
-  // ★ 關鍵修正：安全處理 type
-  const rawType = searchParams.get("type");
-  const profile = getSafeProfile(rawType);
-
-  const { primary, secondary } = profile.palette;
+  const profile = getProfile(searchParams.get("type"));
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* 背景 */}
-      <div
-        className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900"
-        style={{
-          backgroundImage: `
-            radial-gradient(circle at 20% 80%, ${primary}22 0%, transparent 50%),
-            radial-gradient(circle at 80% 20%, ${secondary}22 0%, transparent 50%)
-          `,
-        }}
-      />
-
-      <div className="relative z-10 container mx-auto px-4 py-10 max-w-4xl space-y-10">
-        <HeaderBlock profile={profile} />
-        <ContentCard profile={profile} primary={primary} secondary={secondary} />
-        <ShareBlock profile={profile} />
+    <div
+      className="min-h-screen px-6 py-12"
+      style={{
+        background: `linear-gradient(180deg, ${profile.themeFrom}, ${profile.themeTo})`,
+      }}
+    >
+      <div className="max-w-3xl mx-auto space-y-10">
+        <Header profile={profile} />
+        <Sections profile={profile} />
+        <Footer />
       </div>
     </div>
   );
 }
 
-/* -----------------------------------------
+/* ---------------------------------
    Header
------------------------------------------- */
+---------------------------------- */
 
-function HeaderBlock({ profile }: { profile: Profile }) {
+function Header({ profile }: { profile: MbtiProfile }) {
   return (
-    <div className="text-center space-y-6">
-      <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full border border-white/20">
-        <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-        <span className="text-white/90 text-sm font-medium">
-          Star Vortex Trial Institute
-        </span>
-      </div>
-
-      <h1 className="text-4xl md:text-5xl font-bold text-white">
-        {profile.title}
-      </h1>
-
-      <p className="text-xl md:text-2xl text-white/80">
-        {profile.archetype}｜{profile.tagline}
+    <div className="text-center text-white space-y-4">
+      <p className="text-sm opacity-80 tracking-widest">
+        STAR VORTEX TRIAL INSTITUTE
       </p>
 
-      <div className="flex flex-wrap justify-center gap-2">
-        {profile.keywords.map((k) => (
-          <Badge key={k} className="bg-white/20 text-white border-white/30">
-            {k}
-          </Badge>
-        ))}
-      </div>
+      <h1 className="text-4xl font-bold">
+        {profile.code}｜{profile.name}
+      </h1>
+
+      <p className="text-lg opacity-90">{profile.archetype}</p>
+
+      <p className="text-base opacity-80 max-w-xl mx-auto">
+        {profile.oneLiner}
+      </p>
 
       <Button
         variant="outline"
-        className="bg-white/10 border-white/30 text-white hover:bg-white/20"
+        className="mt-4 bg-white/10 border-white/30 text-white hover:bg-white/20"
         onClick={() => (window.location.href = "/")}
       >
         再測一次
@@ -126,90 +75,48 @@ function HeaderBlock({ profile }: { profile: Profile }) {
   );
 }
 
-/* -----------------------------------------
-   內容卡片
------------------------------------------- */
+/* ---------------------------------
+   Sections
+---------------------------------- */
 
-function ContentCard({
-  profile,
-  primary,
-  secondary,
-}: {
-  profile: Profile;
-  primary: string;
-  secondary: string;
-}) {
+function Sections({ profile }: { profile: MbtiProfile }) {
   return (
-    <Card className="relative bg-white/10 backdrop-blur-md border-white/20 overflow-hidden">
-      <div
-        className="absolute inset-0 opacity-5"
-        style={{ background: `linear-gradient(135deg, ${primary}, ${secondary})` }}
-      />
-
-      <div className="relative p-8 grid md:grid-cols-2 gap-8">
-        <Section title="核心特質">{profile.sections.core}</Section>
-        <Section title="工作適性">{profile.sections.work}</Section>
-        <Section title="關係模式">{profile.sections.relation}</Section>
-        <Section title="陰影面向">{profile.sections.shadow}</Section>
-        <Section title="成長方向">{profile.sections.growth}</Section>
-      </div>
-    </Card>
-  );
-}
-
-/* -----------------------------------------
-   Section
------------------------------------------- */
-
-function Section({
-  title,
-  children,
-}: {
-  title: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="space-y-3">
-      <h3 className="flex items-center gap-2 text-lg font-semibold text-white">
-        <div className="w-1 h-6 bg-gradient-to-b from-blue-400 to-purple-400 rounded-full" />
-        {title}
-      </h3>
-      <p className="text-white/80 leading-relaxed pl-3">{children}</p>
+    <div className="space-y-6">
+      {profile.sections.map((section, idx) => (
+        <Card
+          key={idx}
+          className="bg-white/10 border-white/20 text-white backdrop-blur-md"
+        >
+          <div className="p-6 space-y-4">
+            <h2 className="text-xl font-semibold">{section.title}</h2>
+            <ul className="list-disc list-inside space-y-2 text-white/85">
+              {section.items.map((item, i) => (
+                <li key={i}>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </Card>
+      ))}
     </div>
   );
 }
 
-/* -----------------------------------------
-   分享區塊
------------------------------------------- */
+/* ---------------------------------
+   Footer
+---------------------------------- */
 
-function ShareBlock({ profile }: { profile: Profile }) {
+function Footer() {
   return (
-    <Card className="bg-white/5 backdrop-blur-sm border-white/10 p-6">
-      <h3 className="text-center text-lg font-semibold text-white mb-4">
-        你的「星渦型格」已生成 ✦
-      </h3>
-
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
-        <Button
-          variant="outline"
-          className="bg-white/10 border-white/30 text-white hover:bg-white/20"
-          onClick={() => (window.location.href = "/")}
-        >
-          回到首頁
-        </Button>
-
-        <Button
-          className="bg-gradient-to-r from-blue-500 to-purple-500 text-white"
-          onClick={() => {
-            const text = `我的 MBTI 是 ${profile.title}｜${profile.tagline}`;
-            navigator.clipboard.writeText(text);
-            alert("已複製分享文字！");
-          }}
-        >
-          複製分享文字
-        </Button>
-      </div>
-    </Card>
+    <div className="text-center pt-6">
+      <Button
+        className="bg-black/30 text-white hover:bg-black/50"
+        onClick={() => {
+          navigator.clipboard.writeText(window.location.href);
+          alert("結果連結已複製！");
+        }}
+      >
+        複製結果連結
+      </Button>
+    </div>
   );
 }
