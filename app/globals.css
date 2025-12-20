@@ -1,44 +1,139 @@
-/* Tailwind 基本層 */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* 你自己的全局樣式 */
-html, body {
+/* ---------- 基礎 ---------- */
+html,
+body {
   margin: 0;
   padding: 0;
-  font-family: system-ui, sans-serif;
-  background-color: #000;
+  background: #000;
   color: white;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
 }
 
-/* 星雲背景可用的 class */
-.result-bg {
-  background-image: url('/result-bg.jpg');
+/* ---------- 通用背景容器 ---------- */
+.quiz-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(
+      circle at center,
+      rgba(255, 255, 255, 0.08),
+      rgba(0, 0, 0, 0.85)
+    ),
+    url("/quiz-bg.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-/* 浮動動畫 */
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+/* ---------- 題目卡 ---------- */
+.quiz-card {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 48px 40px;
+  background: rgba(10, 10, 20, 0.75);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
 }
 
-.float {
-  animation: float 4s ease-in-out infinite;
+/* ---------- 題目標題 ---------- */
+.quiz-title {
+  font-size: 30px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.5;
 }
 
-/* 如果你原本有 Leaf 動畫，我先保留一組 */
-@keyframes floatLeaf {
-  0% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-20px) rotate(10deg); }
-  100% { transform: translateY(0) rotate(0deg); }
+/* ---------- 選項 ---------- */
+.quiz-option {
+  width: 100%;
+  padding: 18px 22px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #111;
+  font-size: 17px;
+  line-height: 1.6;
+  text-align: left;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
-.leaf-float {
-  animation: floatLeaf 4s ease-in-out infinite;
+.quiz-option:hover {
+  transform: translateY(-2px);
+  background: #fff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+/* =========================
+   Quiz Background（安全補強）
+   不影響邏輯，只處理視覺
+========================= */
+
+.quiz-bg {
+  min-height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
+.quiz-overlay {
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(10, 15, 30, 0.55) 0%,
+    rgba(5, 8, 18, 0.85) 70%,
+    rgba(0, 0, 0, 0.95) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quiz-panel {
+  width: 100%;
+  max-width: 900px;
+  padding: 48px 32px;
+}
+
+.quiz-progress {
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 12px;
+}
+
+.quiz-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.6;
+  margin-bottom: 32px;
+  color: #ffffff;
+}
+
+.quiz-option {
+  width: 100%;
+  padding: 18px 22px;
+  margin-bottom: 14px;
+  font-size: 16px;
+  text-align: left;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.quiz-option:hover {
+  transform: translateY(-1px);
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
