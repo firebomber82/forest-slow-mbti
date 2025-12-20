@@ -5,9 +5,8 @@ import { useRouter } from "next/navigation";
 import { questions } from "@/data/questions";
 
 /* ---------------------------------
-   背景圖對照表（含保底）
+   背景圖對照（鎖定用）
 ---------------------------------- */
-
 const bgMap: Record<number, string> = {
   1: "/q1-heart-crystal.png",
   2: "/q2-feather-glow.png",
@@ -25,8 +24,6 @@ const bgMap: Record<number, string> = {
   14: "/q14-order-circle.png",
   15: "/q15-soul-ember.png",
   16: "/q16-forest-guardian.png",
-
-  // 👉 後段題目使用「象徵性背景」
   17: "/bg-forest-top.png",
   18: "/bg-forest-top.png",
   19: "/core-truth.png",
@@ -37,32 +34,54 @@ const bgMap: Record<number, string> = {
   24: "/bg-forest-bottom.png",
 };
 
-// 最終保底（萬一哪天超過 24 題）
 const FALLBACK_BG = "/bg-forest-top.png";
+
+/* ---------------------------------
+   MBTI 計算
+---------------------------------- */
+type MBTIKey = "E" | "I" | "S" | "N" | "T" | "F" | "J" | "P";
+
+function calculateMBTI(answers: MBTIKey[]) {
+  const score: Record<MBTIKey, number> = {
+    E: 0,
+    I: 0,
+    S: 0,
+    N: 0,
+    T: 0,
+    F: 0,
+    J: 0,
+    P: 0,
+  };
+
+  answers.forEach((a) => score[a]++);
+
+  return [
+    score.E >= score.I ? "E" : "I",
+    score.S >= score.N ? "S" : "N",
+    score.T >= score.F ? "T" : "F",
+    score.J >= score.P ? "J" : "P",
+  ].join("");
+}
 
 /* ---------------------------------
    Quiz Page
 ---------------------------------- */
-
 export default function QuizPage() {
   const router = useRouter();
   const [index, setIndex] = useState(0);
-  const [answers, setAnswers] = useState<string[]>([]);
+  const [answers, setAnswers] = useState<MBTIKey[]>([]);
 
-  const current = questions[index];
+  const question = questions[index];
   const questionNumber = index + 1;
+  const bgImage = bgMap[questionNumber] ?? FALLBACK_BG;
 
-  const bgImage =
-    bgMap[questionNumber] ?? FALLBACK_BG;
-
-  function handleAnswer(value: string) {
-    const nextAnswers = [...answers, value];
-    setAnswers(nextAnswers);
+  function handleAnswer(value: MBTIKey) {
+    const next = [...answers, value];
+    setAnswers(next);
 
     if (index === questions.length - 1) {
-      // ⚠️ 這裡不動你的計算流程
-      // 假設你已經有 MBTI 計算結果
-      router.push("/result?type=INFJ");
+      const result = calculateMBTI(next);
+      router.push(`/result?type=${result}`);
     } else {
       setIndex(index + 1);
     }
@@ -73,27 +92,42 @@ export default function QuizPage() {
       className="min-h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${bgImage})` }}
     >
+      {/* 遮罩 */}
       <div className="min-h-screen bg-black/60 flex items-center justify-center px-4">
-        <div className="max-w-3xl w-full text-white space-y-8">
+        <div className="w-full max-w-3xl text-white space-y-10">
+
+          {/* 進度 */}
           <div className="text-center text-sm tracking-widest opacity-80">
             問題 {questionNumber} / {questions.length}
           </div>
 
+          {/* 題目 */}
           <h1 className="text-2xl md:text-3xl font-semibold text-center leading-relaxed">
-            {current.question}
+            {question.question}
           </h1>
 
-          <div className="space-y-4">
-            {current.options.map((opt) => (
+          {/* 選項（強制置中結構） */}
+          <div className="flex flex-col items-center gap-4">
+            {question.options.map((opt, i) => (
               <button
-                key={opt.value}
+                key={`${question.id}-${i}`}
                 onClick={() => handleAnswer(opt.value)}
-                className="w-full text-left px-6 py-4 rounded-xl bg-white/90 text-black hover:bg-white transition shadow-md"
+                className="
+                  w-full max-w-xl
+                  px-6 py-4
+                  rounded-xl
+                  bg-white/90 text-black
+                  text-center
+                  hover:bg-white
+                  transition
+                  shadow-md
+                "
               >
                 {opt.text}
               </button>
             ))}
           </div>
+
         </div>
       </div>
     </section>

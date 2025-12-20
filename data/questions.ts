@@ -1,281 +1,292 @@
-// data/questions.ts
-
 export type Option = {
   text: string;
-  value: "A" | "B" | "C" | "D";
+  value: "E" | "I" | "S" | "N" | "T" | "F" | "J" | "P";
 };
 
 export type Question = {
   id: number;
   question: string;
   options: Option[];
-  reverse?: boolean; // 之後可做一致性檢查
 };
 
 export const questions: Question[] = [
+  /* ---------------------------------
+     E / I｜能量來源（1–6）
+  ---------------------------------- */
+
   {
     id: 1,
-    question: "Q1｜你走進陌生研討會場，剛坐下時你會？",
+    question: "你走進陌生研討會場，剛坐下時你會？",
     options: [
-      { text: "A. 先觀察四周動線與人群，找最舒服的位置。", value: "A" },
-      { text: "B. 主動與鄰座打招呼，建立基本互動。", value: "B" },
-      { text: "C. 看整場架構，猜測之後可能會發生什麼。", value: "C" },
-      { text: "D. 等活動開始後再決定怎麼融入。", value: "D" },
+      { text: "先觀察四周動線與人群，找最舒服的位置。", value: "I" },
+      { text: "主動與鄰座打招呼，建立基本互動。", value: "E" },
+      { text: "看整體氣氛，判斷什麼時候加入比較自然。", value: "I" },
+      { text: "直接聊重點，快速切入話題。", value: "E" },
     ],
   },
 
   {
     id: 2,
-    question: "Q2｜你被指派審查一份亂糟糟的文件，你的第一步？",
+    question: "一整天都在與人討論後，你通常會？",
     options: [
-      { text: "A. 找出格式問題與事實錯誤。", value: "A" },
-      { text: "B. 重建整份文件的邏輯架構。", value: "B" },
-      { text: "C. 詢問團隊是否有人能提供背景資訊。", value: "C" },
-      { text: "D. 先閱讀大標題掌握方向，再決定深度。", value: "D" },
+      { text: "感到精神被激發，還能繼續延伸想法。", value: "E" },
+      { text: "開始覺得疲憊，需要安靜消化。", value: "I" },
+      { text: "想找少數熟悉的人繼續深聊。", value: "I" },
+      { text: "反而越聊越有能量。", value: "E" },
     ],
   },
 
   {
     id: 3,
-    question: "Q3｜同事分享一段複雜的產業趨勢，你的理解方式？",
+    question: "你比較容易在什麼情境下進入最佳狀態？",
     options: [
-      { text: "A. 請他提供具體案例或證據。", value: "A" },
-      { text: "B. 延伸思考未來可能的情境。", value: "B" },
-      { text: "C. 看哪些內容與當前專案有關。", value: "C" },
-      { text: "D. 先聽感覺，之後再做自己的解讀。", value: "D" },
+      { text: "有空間獨立思考、不被打斷。", value: "I" },
+      { text: "在互動與即時回饋中。", value: "E" },
+      { text: "低干擾、可長時間專注。", value: "I" },
+      { text: "快速交換觀點、即時修正。", value: "E" },
     ],
   },
 
   {
     id: 4,
-    question: "Q4｜第一次和陌生客戶溝通，你會？",
+    question: "當你需要整理想法時，通常會？",
     options: [
-      { text: "A. 用簡短具體的方式破冰。", value: "A" },
-      { text: "B. 用整體願景切入，建立共同感。", value: "B" },
-      { text: "C. 聽對方說話，觀察細節反應。", value: "C" },
-      { text: "D. 跟著對方風格調整互動方式。", value: "D" },
+      { text: "先自己想清楚再說。", value: "I" },
+      { text: "邊說邊想，透過對話釐清。", value: "E" },
+      { text: "寫下來慢慢整理。", value: "I" },
+      { text: "找人討論測試想法。", value: "E" },
     ],
   },
 
   {
     id: 5,
-    question: "Q5｜新專案 Kickoff，你最在意？",
+    question: "你對臨時被拉進討論的感受是？",
     options: [
-      { text: "A. 明確的分工與流程。", value: "A" },
-      { text: "B. 全局目標與未來影響。", value: "B" },
-      { text: "C. 團隊氛圍與合作默契。", value: "C" },
-      { text: "D. 有多少彈性與可調整空間。", value: "D" },
+      { text: "需要一點時間適應。", value: "I" },
+      { text: "通常能快速進入狀況。", value: "E" },
+      { text: "偏好事先知道內容。", value: "I" },
+      { text: "臨場反應反而表現更好。", value: "E" },
     ],
   },
 
   {
     id: 6,
-    question: "Q6｜有人提出你不同意的提案，你會？",
+    question: "長時間沒有社交時，你比較可能？",
     options: [
-      { text: "A. 要他說明數據或邏輯再判斷。", value: "A" },
-      { text: "B. 先聽他的動機、理解需求。", value: "B" },
-      { text: "C. 試著提出折衷版本。", value: "C" },
-      { text: "D. 直接提出你認為最好的方向。", value: "D" },
+      { text: "覺得狀態穩定、內在清晰。", value: "I" },
+      { text: "開始覺得悶，需要互動。", value: "E" },
+      { text: "享受獨處的節奏。", value: "I" },
+      { text: "主動找人聊聊。", value: "E" },
     ],
   },
 
+  /* ---------------------------------
+     S / N｜資訊處理（7–12）
+  ---------------------------------- */
+
   {
     id: 7,
-    question: "Q7｜開會時聽到兩人衝突，你會？",
+    question: "面對新資訊時，你第一步通常是？",
     options: [
-      { text: "A. 評估哪一方邏輯更完整。", value: "A" },
-      { text: "B. 嘗試先穩定雙方情緒。", value: "B" },
-      { text: "C. 記錄重點，會後整理方向。", value: "C" },
-      { text: "D. 看氣氛如何再決定是否介入。", value: "D" },
+      { text: "確認實際內容與細節。", value: "S" },
+      { text: "思考它背後可能代表的意義。", value: "N" },
+      { text: "看是否與過往經驗相符。", value: "S" },
+      { text: "聯想到其他相關概念。", value: "N" },
     ],
   },
 
   {
     id: 8,
-    question: "Q8｜遇到臨時變動，你的思考方式？",
+    question: "你比較信任哪一種理解方式？",
     options: [
-      { text: "A. 先看是否影響原本計畫。", value: "A" },
-      { text: "B. 評估是否有更好的替代方案。", value: "B" },
-      { text: "C. 了解為何變動，再調整心態。", value: "C" },
-      { text: "D. 冷靜分析背後原因。", value: "D" },
+      { text: "具體案例與可驗證事實。", value: "S" },
+      { text: "整體脈絡與長期趨勢。", value: "N" },
+      { text: "一步一步累積出的結論。", value: "S" },
+      { text: "對未來走向的直覺。", value: "N" },
     ],
   },
 
   {
     id: 9,
-    question: "Q9｜你是整合專案的人，你會採用哪種管理風格？",
+    question: "聽人說明複雜概念時，你會？",
     options: [
-      { text: "A. 明確規範、固定期限。", value: "A" },
-      { text: "B. 大方向即可，自由運作。", value: "B" },
-      { text: "C. 多聽大家意見後再定結論。", value: "C" },
-      { text: "D. 用數據與架構強化執行力。", value: "D" },
+      { text: "抓住關鍵定義與流程。", value: "S" },
+      { text: "先理解整體方向再補細節。", value: "N" },
+      { text: "關注實際如何操作。", value: "S" },
+      { text: "思考可能的延伸與影響。", value: "N" },
     ],
   },
 
   {
     id: 10,
-    question: "Q10｜面對壓力時，你最常見的模式？",
+    question: "你比較容易被什麼吸引？",
     options: [
-      { text: "A. 設定計畫逐項解決。", value: "A" },
-      { text: "B. 想像最差與最好情境。", value: "B" },
-      { text: "C. 找可信賴的人討論感受。", value: "C" },
-      { text: "D. 冷靜，等直覺告訴你怎麼做。", value: "D" },
+      { text: "能立刻派上用場的資訊。", value: "S" },
+      { text: "能打開新視角的想法。", value: "N" },
+      { text: "實際改善現況的方法。", value: "S" },
+      { text: "尚未被完全說清楚的可能性。", value: "N" },
     ],
   },
 
   {
     id: 11,
-    question: "Q11｜團隊討論越吵越亂，你會？",
+    question: "當計畫出現變數時，你會？",
     options: [
-      { text: "A. 拍板定案要求回到主題。", value: "A" },
-      { text: "B. 讓大家輪流講完再整合。", value: "B" },
-      { text: "C. 不急著結論，先讓資訊流動。", value: "C" },
-      { text: "D. 協助把焦點拉回目的。", value: "D" },
+      { text: "回到原本的步驟檢查哪裡出錯。", value: "S" },
+      { text: "重新思考整體方向是否要調整。", value: "N" },
+      { text: "修正具體執行方式。", value: "S" },
+      { text: "嘗試不同的可能路線。", value: "N" },
     ],
   },
 
   {
     id: 12,
-    question: "Q12｜收到一份資訊很少的重要資料，你會？",
+    question: "你怎麼判斷一個想法是否可行？",
     options: [
-      { text: "A. 要求補齊資訊。", value: "A" },
-      { text: "B. 從已有內容快速推論方向。", value: "B" },
-      { text: "C. 找熟悉的人了解脈絡。", value: "C" },
-      { text: "D. 先建立簡易模型試跑。", value: "D" },
+      { text: "是否有實際成功案例。", value: "S" },
+      { text: "是否符合長期發展邏輯。", value: "N" },
+      { text: "能否在現有條件下執行。", value: "S" },
+      { text: "是否能帶來新的突破。", value: "N" },
     ],
   },
 
+  /* ---------------------------------
+     T / F｜決策依據（13–18）
+  ---------------------------------- */
+
   {
     id: 13,
-    question: "Q13｜團隊要選今天晚餐，你會？",
+    question: "當你的判斷可能讓人不舒服，但對結果有利時？",
     options: [
-      { text: "A. 推效率最高的選項。", value: "A" },
-      { text: "B. 看大家的 mood。", value: "B" },
-      { text: "C. 提出 2-3 個選項讓大家 vote。", value: "C" },
-      { text: "D. 跟著大家但自己有偏好。", value: "D" },
+      { text: "仍然說出關鍵判斷。", value: "T" },
+      { text: "嘗試用不傷人的方式表達。", value: "F" },
+      { text: "衡量後果再決定是否開口。", value: "T" },
+      { text: "優先顧及對方感受。", value: "F" },
     ],
   },
 
   {
     id: 14,
-    question: "Q14｜新成員加入團隊，你會？",
+    question: "做決定時，你更在意？",
     options: [
-      { text: "A. 準備清楚的 onboarding 文件。", value: "A" },
-      { text: "B. 先讓他和大家熟起來。", value: "B" },
-      { text: "C. 觀察風格再調整方式。", value: "C" },
-      { text: "D. 了解他能補什麼能力缺口。", value: "D" },
+      { text: "是否符合邏輯與公平性。", value: "T" },
+      { text: "是否影響人際關係。", value: "F" },
+      { text: "是否站得住腳。", value: "T" },
+      { text: "是否讓人感到被尊重。", value: "F" },
     ],
   },
 
   {
     id: 15,
-    question: "Q15｜完成一項任務後你最常有的感受？",
+    question: "你如何看待衝突？",
     options: [
-      { text: "A. 是否達到預期品質。", value: "A" },
-      { text: "B. 整體意義是什麼。", value: "B" },
-      { text: "C. 團隊配合是否順利。", value: "C" },
-      { text: "D. 先休息等下一步靈感。", value: "D" },
+      { text: "必要時是釐清問題的方式。", value: "T" },
+      { text: "會盡量避免，除非無法忽視。", value: "F" },
+      { text: "只要有助於結果可以接受。", value: "T" },
+      { text: "容易讓人受傷，需要謹慎。", value: "F" },
     ],
   },
 
   {
     id: 16,
-    question: "Q16｜第一次到一個城市旅行，你會？",
+    question: "別人向你求助時，你通常會？",
     options: [
-      { text: "A. 照行程表逐點完成。", value: "A" },
-      { text: "B. 依照氣氛漫步。", value: "B" },
-      { text: "C. 找當地人推薦特色。", value: "C" },
-      { text: "D. 查看評論後優化路線。", value: "D" },
+      { text: "分析問題並給出建議。", value: "T" },
+      { text: "先理解對方情緒。", value: "F" },
+      { text: "指出關鍵盲點。", value: "T" },
+      { text: "陪對方把感受說完。", value: "F" },
     ],
   },
 
   {
     id: 17,
-    question: "Q17｜你在工作中最討厭的是？",
+    question: "你比較難接受哪一種狀況？",
     options: [
-      { text: "A. 沒有明確規格。", value: "A" },
-      { text: "B. 過度僵化不能改。", value: "B" },
-      { text: "C. 氣氛緊繃或衝突。", value: "C" },
-      { text: "D. 浪費時間與低效率。", value: "D" },
+      { text: "決策缺乏一致邏輯。", value: "T" },
+      { text: "他人被忽略或受傷。", value: "F" },
+      { text: "情緒凌駕事實。", value: "T" },
+      { text: "過於冷漠的處理方式。", value: "F" },
     ],
   },
 
   {
     id: 18,
-    question: "Q18｜你要準備一場重要簡報，你會？",
+    question: "回顧重要決定時，你通常檢討的是？",
     options: [
-      { text: "A. 撰寫逐頁細節確認。", value: "A" },
-      { text: "B. 做架構即可臨場發揮。", value: "B" },
-      { text: "C. 收集案例提高理解。", value: "C" },
-      { text: "D. 用數據提升說服力。", value: "D" },
+      { text: "判斷是否足夠理性。", value: "T" },
+      { text: "是否照顧到所有人。", value: "F" },
+      { text: "邏輯是否完整。", value: "T" },
+      { text: "關係是否被影響。", value: "F" },
     ],
   },
 
+  /* ---------------------------------
+     J / P｜行動節奏（19–24）
+  ---------------------------------- */
+
   {
     id: 19,
-    question: "Q19｜你和人討論時最常注意什麼？",
+    question: "面對不確定的狀況，你會？",
     options: [
-      { text: "A. 對方細節、語氣。", value: "A" },
-      { text: "B. 整體邏輯結構。", value: "B" },
-      { text: "C. 對方情緒需求。", value: "C" },
-      { text: "D. 對話節奏與能量。", value: "D" },
+      { text: "盡快做出暫時決定。", value: "J" },
+      { text: "保持彈性等待更多資訊。", value: "P" },
+      { text: "設定明確方向再行動。", value: "J" },
+      { text: "接受變動是過程的一部分。", value: "P" },
     ],
   },
 
   {
     id: 20,
-    question: "Q20｜你對新點子的反應？",
+    question: "你偏好哪種工作狀態？",
     options: [
-      { text: "A. 先檢查是否可行。", value: "A" },
-      { text: "B. 想像未來衍生什麼。", value: "B" },
-      { text: "C. 看團隊氣氛是否能接受。", value: "C" },
-      { text: "D. 想先試試看。", value: "D" },
+      { text: "有清楚計畫與期限。", value: "J" },
+      { text: "依情況調整步調。", value: "P" },
+      { text: "先完成再優化。", value: "J" },
+      { text: "邊做邊修正。", value: "P" },
     ],
   },
 
   {
     id: 21,
-    question: "Q21｜你收到三個急件，你會？",
+    question: "計畫被打亂時，你的反應是？",
     options: [
-      { text: "A. 立刻排序拆解。", value: "A" },
-      { text: "B. 用直覺挑第一個。", value: "B" },
-      { text: "C. 聯絡相關人了解脈絡。", value: "C" },
-      { text: "D. 先建簡易框架再開工。", value: "D" },
+      { text: "感到焦慮，需要重新安排。", value: "J" },
+      { text: "順勢調整，不太受影響。", value: "P" },
+      { text: "立刻找替代方案。", value: "J" },
+      { text: "觀察變化再決定。", value: "P" },
     ],
   },
 
   {
     id: 22,
-    question: "Q22｜陌生環境中的自然狀態？",
+    question: "你如何看待截止期限？",
     options: [
-      { text: "A. 靜靜觀察後再加入。", value: "A" },
-      { text: "B. 很快融入主動互動。", value: "B" },
-      { text: "C. 探索整體 patterns。", value: "C" },
-      { text: "D. 跟著環境節奏。", value: "D" },
+      { text: "是推動行動的重要工具。", value: "J" },
+      { text: "只是參考，不必過度拘泥。", value: "P" },
+      { text: "能讓事情有結果。", value: "J" },
+      { text: "容易限制彈性。", value: "P" },
     ],
   },
 
   {
     id: 23,
-    question: "Q23｜協助別人解決問題時，你最先？",
+    question: "臨時機會出現時，你會？",
     options: [
-      { text: "A. 分析原因與線索。", value: "A" },
-      { text: "B. 理解情緒與需求。", value: "B" },
-      { text: "C. 想像底層結構。", value: "C" },
-      { text: "D. 問他最想得到什麼。", value: "D" },
+      { text: "評估是否符合原本計畫。", value: "J" },
+      { text: "視情況嘗試看看。", value: "P" },
+      { text: "確認風險後再行動。", value: "J" },
+      { text: "先把握再說。", value: "P" },
     ],
   },
 
   {
     id: 24,
-    question: "Q24｜你看到一個混亂的情境，你的第一反應？",
+    question: "完成一件事後，你通常會？",
     options: [
-      { text: "A. 想先把事情整理有序。", value: "A" },
-      { text: "B. 觀察等靈感出現。", value: "B" },
-      { text: "C. 找出核心問題。", value: "C" },
-      { text: "D. 想確保大家都 ok 再談解法。", value: "D" },
+      { text: "立刻整理並畫下句點。", value: "J" },
+      { text: "看看是否還有可調整空間。", value: "P" },
+      { text: "準備下一步計畫。", value: "J" },
+      { text: "讓事情自然收尾。", value: "P" },
     ],
   },
 ];
-
-export default questions;
